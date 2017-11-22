@@ -44,6 +44,21 @@
         protected System.Web.UI.WebControls.PlaceHolder FailureHolder;
 
         /// <summary>
+        /// licenseOptions control.
+        /// </summary>
+        protected System.Web.UI.HtmlControls.HtmlGenericControl licenseOptions;
+
+        /// <summary>
+        /// licenseInfo control.
+        /// </summary>
+        protected System.Web.UI.HtmlControls.HtmlGenericControl licenseInfo;
+
+        /// <summary>
+        /// loginLink control.
+        /// </summary>
+        protected System.Web.UI.HtmlControls.HtmlGenericControl loginLink;
+
+        /// <summary>
         /// FailureText control.
         /// </summary>
         /// <remarks>
@@ -195,7 +210,7 @@
         {
             string text = this.UserNameForgot.Text;
             this.fullUserName = WebUtil.HandleFullUserName(text);
-            if (Sitecore.Security.Accounts.User.Exists(this.fullUserName))
+            if (Security.Accounts.User.Exists(this.fullUserName))
             {
                 PasswordRecoveryArgs args = new PasswordRecoveryArgs(this.Context)
                 {
@@ -233,7 +248,7 @@
         /// </summary>
         protected virtual void LoggedIn()
         {
-            User user = Sitecore.Security.Accounts.User.FromName(this.fullUserName, false);
+            User user = Security.Accounts.User.FromName(this.fullUserName, false);
             State.Client.UsesBrowserWindows = true;
             LoggedInArgs loggedInArgs = new LoggedInArgs
             {
@@ -338,7 +353,7 @@
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-            if (Sitecore.Context.User.IsAuthenticated)
+            if (SitecoreContext.User.IsAuthenticated)
             {
                 if (WebUtil.GetQueryString("inv") == "1")
                 {
@@ -375,6 +390,7 @@
                 Log.Error("Setting response headers is not supported.", exception, this);
             }
             this.RenderSdnInfoPage();
+            this.RemoveLicenseInfo();
             base.OnInit(e);
         }
 
@@ -434,7 +450,7 @@
             urlString["licensee"] = License.Licensee;
             urlString["iisname"] = WebUtil.GetIISName();
             urlString["st"] = WebUtil.GetCookieValue("sitecore_starttab", string.Empty);
-            urlString["sc_lang"] = Sitecore.Context.Language.Name;
+            urlString["sc_lang"] = SitecoreContext.Language.Name;
             urlString["v"] = About.GetVersionNumber(true);
             this.StartPage.Attributes["src"] = urlString.ToString();
             this.StartPage.Attributes["onload"] = "javascript:this.style.display='block'";
@@ -463,6 +479,14 @@
         private bool ShouldPersist()
         {
             return !Settings.Login.DisableRememberMe && this.RememberMe.Checked;
+        }
+
+        private void RemoveLicenseInfo()
+        {
+            if (Settings.Login.DisableLicenseInfo)
+            {
+                licenseOptions.Visible = false;
+            }
         }
     }
 }

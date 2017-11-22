@@ -58,7 +58,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\zzz\Sitecore.Support.176688.config" />
     <Content Include="Sitecore\Login\default.aspx" />
   </ItemGroup>
   <ItemGroup>

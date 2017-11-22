@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" CodeBehind="Default.aspx.cs" Inherits="Sitecore.sitecore.login.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" CodeBehind="Default.aspx.cs" Inherits="Sitecore.Support.Sitecore.Login.Default" %>
 
 <%@ Import Namespace="Sitecore.Configuration" %>
 <%@ Import Namespace="Sitecore.SecurityModel.License" %>
@@ -17,12 +17,12 @@
             var urlParams = encodeURIComponent(top.location.pathname + top.location.search + top.location.hash);
             if (urlParams) {
                 top.location.href = '<%#GetLoginPageUrl()%>' + '?returnUrl=' + (top.location.pathname[0] == '/' ? '' : '/') + urlParams;
-          }
-      }
+            }
+        }
     </script>
 
     <!-- Bootstrap for testing -->
-  <link href="Login.css" rel="stylesheet" />
+    <link href="Login.css" rel="stylesheet" />
 
     <style>
         .login-outer {
@@ -36,7 +36,7 @@
         <div class="login-main-wrap">
             <div class="login-box">
                 <div class="logo-wrap">
-          <img src="login/logo_new.png" alt="Sitecore logo" />
+                    <img src="login/logo_new.png" alt="Sitecore logo" />
                 </div>
 
                 <form id="LoginForm" runat="server" class="form-signin" role="form">
@@ -88,14 +88,12 @@
 
                         <div class="remember-me-wrap">
 
-                            <% if (!Settings.Login.DisableLicenseInfo)
-                               { %>
                             <asp:PlaceHolder ID="PlaceHolder3" runat="server" Visible="<%# !Settings.Login.DisableLicenseInfo%>">
                                 <div class="license-info-link-wrap">
                                     <a href="javascript:;" id="licenseOptionsLink" class="login-link">License options</a>
                                 </div>
                             </asp:PlaceHolder>
-                            <% } %>
+
                             <asp:PlaceHolder ID="PlaceHolder2" runat="server" Visible="<%# !Settings.Login.DisableRememberMe%>">
                                 <div class="remember-me-lnk">
                                     <label class="checkbox login-label">
@@ -136,27 +134,21 @@
                             <a class="hide-recovery login-link" href="javascript:;">&lt; Back</a>
                         </div>
                     </div>
-                    <div id="licenseOptions" style="display: none;">
+                    <div id="licenseOptions" style="display: none;" runat="server">
                         <%--            <h2 class="form-signin-heading">License and browser information</h2>--%>
-                        <% if (!Settings.Login.DisableLicenseInfo)
-                           { %>
-                        <div class="license-info-wrap">
+                        <div id="licenseInfo" class="license-info-wrap" runat="server">
                             <ul>
                                 <li>System information</li>
                                 <li>License holder <%# License.Licensee%></li>
                                 <li>License ID <%# License.LicenseID%></li>
                                 <li>Sitecore version <%# About.VersionInformation()%></li>
                             </ul>
-                            <% } %>
                             <iframe id="StartPage" runat="server" allowtransparency="true" frameborder="0" scrolling="auto"
                                 marginheight="0" marginwidth="0" style="display: none; height: 105px;"></iframe>
                         </div>
-                        <% if (!Settings.Login.DisableLicenseInfo)
-                           { %>
-                        <div class="login-link-wrap">
+                        <div id="loginLink" class="login-link-wrap" runat="server">
                             <a href="javascript:;" id="licenseOptionsBack" class="login-link">&lt; Back</a>
                         </div>
-                        <% } %>
                     </div>
                 </form>
             </div>
